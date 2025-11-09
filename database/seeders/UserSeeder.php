@@ -15,6 +15,7 @@ class UserSeeder extends Seeder
         DB::table('users')->insert([
             [
                 'name' => 'Admin User',
+                'login' => 'admin',
                 'email' => 'admin@example.com',
                 'password' => $password,
                 'role' => 'admin',
@@ -24,6 +25,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'name' => 'Manager User',
+                'login' => 'manager',
                 'email' => 'manager@example.com',
                 'password' => $password,
                 'role' => 'manager',
@@ -33,6 +35,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'name' => 'Lawyer User',
+                'login' => 'lawyer',
                 'email' => 'lawyer@example.com',
                 'password' => $password,
                 'role' => 'lawyer',
@@ -48,6 +51,7 @@ class UserSeeder extends Seeder
         for ($i = 0; $i < 100; $i++) {
             DB::table('users')->insert([
                 'name' => $faker->name(),
+                'login' => $faker->unique()->userName(),
                 'email' => $faker->unique()->safeEmail(),
                 'password' => $password,
                 'role' => $roles[array_rand($roles)],

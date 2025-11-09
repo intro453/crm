@@ -56,6 +56,11 @@ class LoginController extends Controller
 
         return route('main');
     }
+  
+  public function username(): string
+    {
+        return 'login';
+    }
 
     /**
      * Get the needed authorization credentials from the request.
@@ -85,5 +90,6 @@ class LoginController extends Controller
         throw ValidationException::withMessages([
             $this->username() => [trans('auth.failed')],
         ]);
-    }
+      
+    
 }
