@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller
 {
@@ -52,5 +55,35 @@ class LoginController extends Controller
         }
 
         return route('main');
+    }
+
+    /**
+     * Get the needed authorization credentials from the request.
+     */
+    protected function credentials(Request $request): array
+    {
+        return array_merge($request->only($this->username(), 'password'), [
+            'is_active' => true,
+        ]);
+    }
+
+    /**
+     * Get the failed login response instance.
+     *
+     * @throws ValidationException
+     */
+    protected function sendFailedLoginResponse(Request $request)
+    {
+        $user = User::where($this->username(), $request->input($this->username()))->first();
+
+        if ($user && ! $user->is_active) {
+            throw ValidationException::withMessages([
+                $this->username() => [trans('auth.blocked')],
+            ]);
+        }
+
+        throw ValidationException::withMessages([
+            $this->username() => [trans('auth.failed')],
+        ]);
     }
 }
