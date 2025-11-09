@@ -15,6 +15,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+})->name('main');
+
+Route::middleware('auth')->group(function () {
+    Route::view('/admin/profile', 'admin.profile')->middleware('admin')->name('admin.profile');
+    Route::view('/manager/profile', 'manager.profile')->middleware('manager')->name('manager.profile');
+    Route::view('/lawyer/profile', 'lawyer.profile')->middleware('lawyer')->name('lawyer.profile');
 });
 
 Auth::routes();
