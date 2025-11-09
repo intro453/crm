@@ -13,15 +13,21 @@
             <span class="fw-bolder text-body">{{ \Illuminate\Support\Str::ucfirst($currentDate) }}</span>
             <a class="ms-md-2 mt-25 mt-md-0 text-primary" href="{{ route('main') }}">Главная</a>
         </div>
+
         <ul class="nav navbar-nav align-items-center ms-auto">
-            <li class="nav-item dropdown-user">
-                <a class="nav-link dropdown-user-link" href="#">
-                    <div class="user-nav d-flex flex-column text-end me-1">
-                        <span class="user-name fw-bolder">{{ $fullName }}</span>
-                        <span class="user-status text-capitalize">{{ $roleLabel }}</span>
-                    </div>
-                    {{--logout--}}
-                </a>
+            <li class="nav-item d-flex align-items-center">
+                <div class="user-nav d-flex flex-column text-end me-1">
+                    <span class="user-name fw-bolder">{{ $fullName }}</span>
+                    <span class="user-status text-capitalize">{{ $roleLabel }}</span>
+                </div>
+
+                {{-- Logout button --}}
+                <form action="{{ route('logout') }}" method="POST" class="m-0 p-0 d-flex align-items-center">
+                    @csrf
+                    <button type="submit" class="btn btn-link p-0 border-0 text-decoration-none">
+                        <i data-feather="log-out" class="text-body"></i>
+                    </button>
+                </form>
             </li>
         </ul>
     </div>
