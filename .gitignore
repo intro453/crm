@@ -17,3 +17,5 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+/public/vuexy-html-bootstrap5-admin-template/
+/public/fragments/
