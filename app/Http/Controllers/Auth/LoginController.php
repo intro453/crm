@@ -56,8 +56,8 @@ class LoginController extends Controller
 
         return route('main');
     }
-  
-  public function username(): string
+
+    public function username(): string
     {
         return 'login';
     }
@@ -81,7 +81,7 @@ class LoginController extends Controller
     {
         $user = User::where($this->username(), $request->input($this->username()))->first();
 
-        if ($user && ! $user->is_active) {
+        if ($user && !$user->is_active) {
             throw ValidationException::withMessages([
                 $this->username() => [trans('auth.blocked')],
             ]);
@@ -90,6 +90,5 @@ class LoginController extends Controller
         throw ValidationException::withMessages([
             $this->username() => [trans('auth.failed')],
         ]);
-      
-    
+    }
 }
