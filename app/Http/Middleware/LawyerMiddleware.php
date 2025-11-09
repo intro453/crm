@@ -20,7 +20,7 @@ class LawyerMiddleware
         $user = Auth::user();
 
         if (!$user || !$user->is_active || !$user->is_lawyer) {
-            abort(404);
+            abort(403);
         }
         return $next($request);
     }
