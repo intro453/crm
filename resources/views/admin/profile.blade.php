@@ -196,7 +196,37 @@
                         </div>
                     </div>
                 </div>
-            </div>
+                @if (session('status') === 'password-updated')
+                    <div class="profile-alert">Пароль успешно обновлён.</div>
+                @endif
+                <form method="POST" action="{{ route('admin.profile.password') }}" class="profile-form">
+                    @csrf
+                    @method('PUT')
+                    <div class="profile-form__grid">
+                        <div class="profile-form__field">
+                            <label class="profile-form__label" for="current_password">Текущий пароль</label>
+                            <input type="password" id="current_password" name="current_password" class="profile-input @error('current_password', 'passwordUpdate') profile-input--error @enderror" placeholder="Введите текущий пароль">
+                            @error('current_password', 'passwordUpdate')
+                                <p class="profile-form__error">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <div class="profile-form__field">
+                            <label class="profile-form__label" for="password">Новый пароль</label>
+                            <input type="password" id="password" name="password" class="profile-input @error('password', 'passwordUpdate') profile-input--error @enderror" placeholder="Введите новый пароль">
+                            @error('password', 'passwordUpdate')
+                                <p class="profile-form__error">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <div class="profile-form__field">
+                            <label class="profile-form__label" for="password_confirmation">Повтор пароля</label>
+                            <input type="password" id="password_confirmation" name="password_confirmation" class="profile-input" placeholder="Повторите новый пароль">
+                        </div>
+                    </div>
+                    <div class="profile-actions">
+                        <button type="submit" class="profile-button">Сохранить</button>
+                    </div>
+                </form>
+            </section>
         </div>
     </div>
 @endsection
