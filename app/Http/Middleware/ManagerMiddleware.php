@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class ManagerMiddleware
@@ -18,7 +19,7 @@ class ManagerMiddleware
 
         $user = Auth::user();
 
-        if (!$user->is_active) {
+        if (!$user || !$user->is_active || !$user->is_manager) {
             abort(404);
         }
         return $next($request);
