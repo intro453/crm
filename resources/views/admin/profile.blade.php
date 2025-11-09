@@ -2,188 +2,10 @@
 
 @section('title', 'Ваш профиль')
 @section('layout-title', 'Админ')
-
-@push('styles')
-    <style>
-        .profile-wrapper {
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            padding-top: 32px;
-        }
-
-        .profile-card {
-            width: 100%;
-            max-width: 720px;
-            background: #ffffff;
-            border-radius: 28px;
-            box-shadow: var(--card-shadow);
-            padding: 36px 40px;
-            display: flex;
-            flex-direction: column;
-            gap: 32px;
-        }
-
-        .profile-card__title {
-            font-size: 26px;
-            font-weight: 600;
-            margin: 0;
-        }
-
-        .profile-section {
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-        }
-
-        .profile-section + .profile-section {
-            border-top: 1px solid var(--border-color);
-            padding-top: 24px;
-        }
-
-        .profile-section__header {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .profile-section__title {
-            margin: 0;
-            font-size: 18px;
-            font-weight: 600;
-            color: var(--text-color);
-        }
-
-        .profile-section__subtitle {
-            margin: 0;
-            font-size: 14px;
-            color: var(--muted-color);
-        }
-
-        .profile-alert {
-            border-radius: 16px;
-            padding: 14px 18px;
-            font-size: 14px;
-            font-weight: 500;
-            background-color: rgba(82, 196, 26, 0.1);
-            color: #3f8f1b;
-        }
-
-        .profile-form {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .profile-form__grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
-        }
-
-        .profile-form__field {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .profile-form__label {
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--muted-color);
-        }
-
-        .profile-input {
-            width: 100%;
-            border-radius: 18px;
-            border: 1px solid var(--border-color);
-            background: #f8f8ff;
-            padding: 14px 18px;
-            font-size: 15px;
-            font-family: 'Montserrat', sans-serif;
-            transition: border-color 0.2s ease, box-shadow 0.2s ease;
-            color: var(--text-color);
-        }
-
-        .profile-input:focus {
-            outline: none;
-            border-color: rgba(108, 93, 211, 0.45);
-            box-shadow: 0 0 0 3px rgba(108, 93, 211, 0.15);
-        }
-
-        .profile-input:disabled {
-            background: #f1f1fb;
-            color: var(--muted-color);
-            cursor: not-allowed;
-        }
-
-        .profile-form__error {
-            font-size: 13px;
-            color: #d93030;
-        }
-
-        .profile-input--error {
-            border-color: rgba(217, 48, 48, 0.55);
-            background: rgba(217, 48, 48, 0.04);
-        }
-
-        .profile-actions {
-            display: flex;
-            justify-content: flex-end;
-        }
-
-        .profile-button {
-            border: none;
-            border-radius: 18px;
-            padding: 12px 28px;
-            font-size: 15px;
-            font-weight: 600;
-            color: #ffffff;
-            background: var(--accent-color);
-            cursor: pointer;
-            transition: background 0.2s ease, transform 0.2s ease;
-        }
-
-        .profile-button:hover,
-        .profile-button:focus {
-            background: var(--accent-color-hover);
-        }
-
-        .profile-meta {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 16px;
-            background: #f8f8ff;
-            border-radius: 20px;
-            padding: 18px 20px;
-        }
-
-        .profile-meta__item {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .profile-meta__label {
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            color: var(--muted-color);
-        }
-
-        .profile-meta__value {
-            font-size: 15px;
-            font-weight: 600;
-            color: var(--text-color);
-        }
-
-        @media (max-width: 768px) {
-            .profile-card {
-                padding: 28px 24px;
-            }
-        }
-    </style>
-@endpush
+@section('page-title', 'Ваш профиль')
+@section('breadcrumbs')
+    <a class="text-primary fw-bold" href="{{ route('main') }}">Главная</a>
+@endsection
 
 @section('content')
     @php
@@ -192,75 +14,187 @@
             ? $user->created_at->copy()->locale('ru')->isoFormat('DD MMMM YYYY')
             : '—';
     @endphp
-    <div class="profile-wrapper">
-        <div class="profile-card">
-            <h1 class="profile-card__title">Ваш профиль</h1>
-
-            <section class="profile-section">
-                <div class="profile-section__header">
-                    <h2 class="profile-section__title">Основные данные</h2>
-                    <p class="profile-section__subtitle">Измените персональные данные администратора.</p>
+    <div class="row">
+        <div class="col-12 col-xl-8 col-lg-9 col-md-10 mx-auto">
+            @if(session('status') === 'profile-updated')
+                <div class="alert alert-success d-flex align-items-center mb-1" role="alert">
+                    <i data-feather="check-circle" class="me-50"></i>
+                    <span>Профиль успешно обновлён.</span>
                 </div>
-                @if (session('status') === 'profile-updated')
-                    <div class="profile-alert">Данные профиля успешно обновлены.</div>
-                @endif
-                <form method="POST" action="{{ route('admin.profile.update') }}" class="profile-form">
-                    @csrf
-                    @method('PUT')
-                    <div class="profile-form__grid">
-                        <div class="profile-form__field">
-                            <label class="profile-form__label" for="last_name">Фамилия</label>
-                            <input type="text" id="last_name" name="last_name" class="profile-input @error('last_name') profile-input--error @enderror" placeholder="Введите фамилию" value="{{ old('last_name', $user->last_name) }}">
-                            @error('last_name')
-                                <p class="profile-form__error">{{ $message }}</p>
-                            @enderror
-                        </div>
-                        <div class="profile-form__field">
-                            <label class="profile-form__label" for="first_name">Имя</label>
-                            <input type="text" id="first_name" name="first_name" class="profile-input @error('first_name') profile-input--error @enderror" placeholder="Введите имя" value="{{ old('first_name', $user->first_name) }}">
-                            @error('first_name')
-                                <p class="profile-form__error">{{ $message }}</p>
-                            @enderror
-                        </div>
-                        <div class="profile-form__field">
-                            <label class="profile-form__label" for="middle_name">Отчество</label>
-                            <input type="text" id="middle_name" name="middle_name" class="profile-input @error('middle_name') profile-input--error @enderror" placeholder="Введите отчество" value="{{ old('middle_name', $user->middle_name) }}">
-                            @error('middle_name')
-                                <p class="profile-form__error">{{ $message }}</p>
-                            @enderror
-                        </div>
-                        <div class="profile-form__field">
-                            <label class="profile-form__label" for="login">Логин</label>
-                            <input type="text" id="login" name="login" class="profile-input @error('login') profile-input--error @enderror" placeholder="Введите логин" value="{{ old('login', $user->login) }}">
-                            @error('login')
-                                <p class="profile-form__error">{{ $message }}</p>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="profile-meta">
-                        <div class="profile-meta__item">
-                            <span class="profile-meta__label">ID</span>
-                            <span class="profile-meta__value">{{ $user->id }}</span>
-                        </div>
-                        <div class="profile-meta__item">
-                            <span class="profile-meta__label">Роль</span>
-                            <span class="profile-meta__value">{{ $roleValue }}</span>
-                        </div>
-                        <div class="profile-meta__item">
-                            <span class="profile-meta__label">Дата регистрации</span>
-                            <span class="profile-meta__value">{{ $registeredAt }}</span>
-                        </div>
-                    </div>
-                    <div class="profile-actions">
-                        <button type="submit" class="profile-button">Сохранить</button>
-                    </div>
-                </form>
-            </section>
+            @endif
+            @if(session('status') === 'password-updated')
+                <div class="alert alert-success d-flex align-items-center mb-1" role="alert">
+                    <i data-feather="lock" class="me-50"></i>
+                    <span>Пароль успешно изменён.</span>
+                </div>
+            @endif
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title mb-2">Ваш профиль</h4>
 
-            <section class="profile-section">
-                <div class="profile-section__header">
-                    <h2 class="profile-section__title">Смена пароля</h2>
-                    <p class="profile-section__subtitle">Установите новый пароль для входа.</p>
+                    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-1">
+                        <div>
+                            <h5 class="fw-bolder mb-25">Основные данные</h5>
+                            <p class="text-muted mb-0">Обновите личную информацию учетной записи.</p>
+                        </div>
+                    </div>
+
+                    <form class="validate-form mt-1" method="post" action="{{ route('admin.profile.update') }}">
+                        @csrf
+                        @method('put')
+                        <div class="row gy-1">
+                            <div class="col-md-6">
+                                <label class="form-label" for="last_name">Фамилия</label>
+                                <input
+                                    type="text"
+                                    id="last_name"
+                                    name="last_name"
+                                    class="form-control @error('last_name') is-invalid @enderror"
+                                    value="{{ old('last_name', $user->last_name) }}"
+                                    placeholder="Иванова"
+                                >
+                                @error('last_name')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label" for="first_name">Имя</label>
+                                <input
+                                    type="text"
+                                    id="first_name"
+                                    name="first_name"
+                                    class="form-control @error('first_name') is-invalid @enderror"
+                                    value="{{ old('first_name', $user->first_name) }}"
+                                    placeholder="Татьяна"
+                                >
+                                @error('first_name')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label" for="middle_name">Отчество</label>
+                                <input
+                                    type="text"
+                                    id="middle_name"
+                                    name="middle_name"
+                                    class="form-control @error('middle_name') is-invalid @enderror"
+                                    value="{{ old('middle_name', $user->middle_name) }}"
+                                    placeholder="Александровна"
+                                >
+                                @error('middle_name')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label" for="login">Логин</label>
+                                <input
+                                    type="text"
+                                    id="login"
+                                    name="login"
+                                    class="form-control @error('login') is-invalid @enderror"
+                                    value="{{ old('login', $user->login) }}"
+                                    placeholder="admin"
+                                >
+                                @error('login')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-12 d-flex justify-content-end mt-1">
+                                <button type="submit" class="btn btn-primary">Сохранить</button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <hr class="my-2">
+
+                    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-1">
+                        <div>
+                            <h5 class="fw-bolder mb-25">Смена пароля</h5>
+                            <p class="text-muted mb-0">Укажите текущий и новый пароль для аккаунта.</p>
+                        </div>
+                    </div>
+
+                    <form class="validate-form mt-1" method="post" action="{{ route('admin.profile.password') }}">
+                        @csrf
+                        @method('put')
+                        <div class="row gy-1">
+                            <div class="col-md-6">
+                                <label class="form-label" for="current_password">Текущий пароль</label>
+                                <input
+                                    type="password"
+                                    id="current_password"
+                                    name="current_password"
+                                    class="form-control @error('current_password', 'passwordUpdate') is-invalid @enderror"
+                                    placeholder="Введите текущий пароль"
+                                >
+                                @error('current_password', 'passwordUpdate')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label" for="password">Новый пароль</label>
+                                <input
+                                    type="password"
+                                    id="password"
+                                    name="password"
+                                    class="form-control @error('password', 'passwordUpdate') is-invalid @enderror"
+                                    placeholder="Введите новый пароль"
+                                >
+                                @error('password', 'passwordUpdate')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label" for="password_confirmation">Повтор пароля</label>
+                                <input
+                                    type="password"
+                                    id="password_confirmation"
+                                    name="password_confirmation"
+                                    class="form-control"
+                                    placeholder="Повторите новый пароль"
+                                >
+                            </div>
+                            <div class="col-12 d-flex justify-content-end mt-1">
+                                <button type="submit" class="btn btn-primary">Сохранить</button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="row gy-2 mt-2 pt-1 border-top">
+                        <div class="col-md-4 col-sm-6">
+                            <div class="d-flex align-items-center border rounded p-1">
+                                <span class="avatar bg-light-primary me-75">
+                                    <div class="avatar-content"><i data-feather="shield" class="text-primary"></i></div>
+                                </span>
+                                <div>
+                                    <p class="fw-bolder mb-0 text-body">Роль</p>
+                                    <small class="text-muted text-capitalize">{{ $roleValue }}</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-6">
+                            <div class="d-flex align-items-center border rounded p-1">
+                                <span class="avatar bg-light-success me-75">
+                                    <div class="avatar-content"><i data-feather="hash" class="text-success"></i></div>
+                                </span>
+                                <div>
+                                    <p class="fw-bolder mb-0 text-body">ID</p>
+                                    <small class="text-muted">{{ $user->id }}</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-6">
+                            <div class="d-flex align-items-center border rounded p-1">
+                                <span class="avatar bg-light-warning me-75">
+                                    <div class="avatar-content"><i data-feather="calendar" class="text-warning"></i></div>
+                                </span>
+                                <div>
+                                    <p class="fw-bolder mb-0 text-body">Дата регистрации</p>
+                                    <small class="text-muted">{{ $registeredAt }}</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 @if (session('status') === 'password-updated')
                     <div class="profile-alert">Пароль успешно обновлён.</div>
