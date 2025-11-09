@@ -53,4 +53,9 @@ class LoginController extends Controller
 
         return route('main');
     }
+
+    public function username(): string
+    {
+        return 'login';
+    }
 }
