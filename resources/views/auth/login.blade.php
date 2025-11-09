@@ -1,73 +1,79 @@
-@extends('layouts.app')
+@extends('layouts.auth')
 
-@section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Login') }}</div>
+@section('title', __('Login') . ' - ' . config('app.name'))
 
-                <div class="card-body">
-                    <form method="POST" action="{{ route('login') }}">
-                        @csrf
+@section('auth-title')
+    {{ __('Welcome to :app!', ['app' => config('app.name')]) }} 👋
+@endsection
 
-                        <div class="row mb-3">
-                            <label for="login" class="col-md-4 col-form-label text-md-end">{{ __('login') }}</label>
+@section('auth-subtitle')
+    {{ __('Please sign in to continue') }}
+@endsection
 
-                            <div class="col-md-6">
-                                <input id="login" class="form-control @error('login') is-invalid @enderror" name="login" value="{{ old('login') }}" required autocomplete="login" autofocus>
-
-                                @error('login')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
-
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <div class="col-md-6 offset-md-4">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-
-                                    <label class="form-check-label" for="remember">
-                                        {{ __('Remember Me') }}
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row mb-0">
-                            <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Login') }}
-                                </button>
-
-                                @if (Route::has('password.request'))
-                                    <a class="btn btn-link" href="{{ route('password.request') }}">
-                                        {{ __('Forgot Your Password?') }}
-                                    </a>
-                                @endif
-                            </div>
-                        </div>
-                    </form>
-                </div>
+@section('auth-content')
+    <form class="auth-login-form mt-2" method="POST" action="{{ route('login') }}">
+        @csrf
+        <div class="mb-1">
+            <label class="form-label" for="login">{{ __('Login') }}</label>
+            <input
+                class="form-control @error('login') is-invalid @enderror"
+                id="login"
+                type="text"
+                name="login"
+                value="{{ old('login') }}"
+                placeholder="{{ __('Enter your login') }}"
+                aria-describedby="login"
+                autofocus
+                tabindex="1"
+                autocomplete="username"
+            />
+            @error('login')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+        <div class="mb-1">
+            <div class="d-flex justify-content-between">
+                <label class="form-label" for="login-password">{{ __('Password') }}</label>
+                @if (Route::has('password.request'))
+                    <a href="{{ route('password.request') }}"><small>{{ __('Forgot Password?') }}</small></a>
+                @endif
+            </div>
+            <div class="input-group input-group-merge form-password-toggle">
+                <input
+                    class="form-control form-control-merge @error('password') is-invalid @enderror"
+                    id="login-password"
+                    type="password"
+                    name="password"
+                    placeholder="············"
+                    aria-describedby="login-password"
+                    tabindex="2"
+                    autocomplete="current-password"
+                />
+                <span class="input-group-text cursor-pointer"><i data-feather="eye"></i></span>
+            </div>
+            @error('password')
+                <div class="invalid-feedback d-block">{{ $message }}</div>
+            @enderror
+        </div>
+        <div class="mb-1">
+            <div class="form-check">
+                <input class="form-check-input" id="remember-me" type="checkbox" name="remember" tabindex="3" {{ old('remember') ? 'checked' : '' }}>
+                <label class="form-check-label" for="remember-me">{{ __('Remember Me') }}</label>
             </div>
         </div>
-    </div>
-</div>
+        <button class="btn btn-primary w-100" tabindex="4">{{ __('Login') }}</button>
+    </form>
 @endsection
+
+@section('auth-extra')
+    @if (Route::has('register'))
+        <p class="text-center mb-0">
+            <span>{{ __('New on our platform?') }}</span>
+            <a href="{{ route('register') }}"><span>&nbsp;{{ __('Create an account') }}</span></a>
+        </p>
+    @endif
+@endsection
+
+@push('page-script')
+    <script src="{{ asset('vuexy/app-assets/js/scripts/pages/auth-login.js') }}"></script>
+@endpush
