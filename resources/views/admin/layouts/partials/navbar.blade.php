@@ -6,15 +6,6 @@
     }
     $roleLabel = $user->role ?? 'admin';
     $currentDate = \Illuminate\Support\Carbon::now()->locale('ru')->isoFormat('dddd, DD MMMM YYYY');
-    $initials = collect([$user->first_name ?? null, $user->last_name ?? null])
-        ->filter()
-        ->map(function ($part) {
-            return mb_substr($part, 0, 1);
-        })
-        ->implode('');
-    if ($initials === '') {
-        $initials = mb_substr($fullName, 0, 1, 'UTF-8');
-    }
 @endphp
 <nav class="header-navbar navbar navbar-expand-lg align-items-center floating-nav navbar-light navbar-shadow">
     <div class="navbar-container d-flex content">
@@ -29,9 +20,7 @@
                         <span class="user-name fw-bolder">{{ $fullName }}</span>
                         <span class="user-status text-capitalize">{{ $roleLabel }}</span>
                     </div>
-                    <span class="avatar bg-light-primary">
-                        <div class="avatar-content">{{ mb_strtoupper($initials, 'UTF-8') }}</div>
-                    </span>
+                    {{--logout--}}
                 </a>
             </li>
         </ul>

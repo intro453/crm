@@ -26,7 +26,6 @@ class ProfileController extends Controller
             'last_name' => ['nullable', 'string', 'max:255'],
             'first_name' => ['nullable', 'string', 'max:255'],
             'middle_name' => ['nullable', 'string', 'max:255'],
-            'login' => ['required', 'string', 'max:255', Rule::unique('users', 'login')->ignore($user->id)],
         ]);
 
         $user->fill($validated);

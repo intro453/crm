@@ -44,29 +44,6 @@
     <div class="content-overlay"></div>
     <div class="header-navbar-shadow"></div>
     <div class="content-wrapper container-xxl p-0">
-        <div class="content-header row">
-            <div class="content-header-left col-12 mb-1">
-                <div class="row breadcrumbs-top">
-                    <div class="col-12 d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between">
-                        <div>
-                            <h2 class="content-header-title float-start mb-0">{{ $pageTitle !== '' ? $pageTitle : $layoutTitle }}</h2>
-                        </div>
-                        <div class="breadcrumb-wrapper pt-25">
-                            @if($breadcrumbsContent !== '')
-                                {!! $breadcrumbsContent !!}
-                            @else
-                                <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="{{ route('main') }}">Главная</a></li>
-                                    @if(($pageTitle !== '' ? $pageTitle : $layoutTitle) !== 'Главная')
-                                        <li class="breadcrumb-item active">{{ $pageTitle !== '' ? $pageTitle : $layoutTitle }}</li>
-                                    @endif
-                                </ol>
-                            @endif
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div class="content-body">
             @yield('content')
         </div>

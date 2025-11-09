@@ -24,7 +24,6 @@
             <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="users"></i><span class="menu-title text-truncate">Клиенты</span></a></li>
             <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="user-check"></i><span class="menu-title text-truncate">Пользователи</span></a></li>
             <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="tag"></i><span class="menu-title text-truncate">Теги заявок</span></a></li>
-            <li class=" navigation-header"><span>Профиль</span><i data-feather="more-horizontal"></i></li>
             <li class=" nav-item {{ request()->routeIs('admin.profile') ? 'active' : '' }}">
                 <a class="d-flex align-items-center" href="{{ route('admin.profile') }}">
                     <i data-feather="user"></i><span class="menu-title text-truncate">Ваш профиль</span>

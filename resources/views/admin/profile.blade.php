@@ -3,9 +3,6 @@
 @section('title', 'Ваш профиль')
 @section('layout-title', 'Админ')
 @section('page-title', 'Ваш профиль')
-@section('breadcrumbs')
-    <a class="text-primary fw-bold" href="{{ route('main') }}">Главная</a>
-@endsection
 
 @section('content')
     @php
@@ -35,7 +32,6 @@
                     <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-1">
                         <div>
                             <h5 class="fw-bolder mb-25">Основные данные</h5>
-                            <p class="text-muted mb-0">Обновите личную информацию учетной записи.</p>
                         </div>
                     </div>
 
@@ -91,9 +87,10 @@
                                     type="text"
                                     id="login"
                                     name="login"
-                                    class="form-control @error('login') is-invalid @enderror"
+                                    class="form-control"
                                     value="{{ old('login', $user->login) }}"
                                     placeholder="admin"
+                                    disabled
                                 >
                                 @error('login')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -196,36 +193,6 @@
                         </div>
                     </div>
                 </div>
-                @if (session('status') === 'password-updated')
-                    <div class="profile-alert">Пароль успешно обновлён.</div>
-                @endif
-                <form method="POST" action="{{ route('admin.profile.password') }}" class="profile-form">
-                    @csrf
-                    @method('PUT')
-                    <div class="profile-form__grid">
-                        <div class="profile-form__field">
-                            <label class="profile-form__label" for="current_password">Текущий пароль</label>
-                            <input type="password" id="current_password" name="current_password" class="profile-input @error('current_password', 'passwordUpdate') profile-input--error @enderror" placeholder="Введите текущий пароль">
-                            @error('current_password', 'passwordUpdate')
-                                <p class="profile-form__error">{{ $message }}</p>
-                            @enderror
-                        </div>
-                        <div class="profile-form__field">
-                            <label class="profile-form__label" for="password">Новый пароль</label>
-                            <input type="password" id="password" name="password" class="profile-input @error('password', 'passwordUpdate') profile-input--error @enderror" placeholder="Введите новый пароль">
-                            @error('password', 'passwordUpdate')
-                                <p class="profile-form__error">{{ $message }}</p>
-                            @enderror
-                        </div>
-                        <div class="profile-form__field">
-                            <label class="profile-form__label" for="password_confirmation">Повтор пароля</label>
-                            <input type="password" id="password_confirmation" name="password_confirmation" class="profile-input" placeholder="Повторите новый пароль">
-                        </div>
-                    </div>
-                    <div class="profile-actions">
-                        <button type="submit" class="profile-button">Сохранить</button>
-                    </div>
-                </form>
             </section>
         </div>
     </div>
