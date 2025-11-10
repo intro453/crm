@@ -5,7 +5,7 @@
         $fullName = $user->name ?? 'Администратор';
     }
     $roleLabel = $user->role ?? 'admin';
-    $currentDate = \Illuminate\Support\Carbon::now()->locale('ru')->isoFormat('dddd, DD MMMM YYYY');
+    $currentDate = now()->locale('ru')->isoFormat('dddd, DD MMMM YYYY');
 @endphp
 <nav class="header-navbar navbar navbar-expand-lg align-items-center floating-nav navbar-light navbar-shadow">
     <div class="navbar-container d-flex content">

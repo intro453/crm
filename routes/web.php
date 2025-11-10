@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\ProfileController;
+use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,10 +20,12 @@ Route::get('/', function () {
 })->name('main');
 
 Route::middleware('auth')->group(function () {
-    Route::prefix('admin')->middleware('admin')->name('admin.')->group(function () {
+    Route::prefix('admin')->middleware('admin')->name('admin.')->group(callback: function () {
         Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
         Route::put('/profile', [ProfileController::class, 'updateProfile'])->name('profile.update');
         Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
+
+        Route::get('/users', [UserController::class, 'index'])->name('users');
     });
     Route::view('/manager/profile', 'manager.profile')->middleware('manager')->name('manager.profile');
     Route::view('/lawyer/profile', 'lawyer.profile')->middleware('lawyer')->name('lawyer.profile');
