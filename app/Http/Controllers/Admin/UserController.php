@@ -14,11 +14,108 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users=User::limit(10)->get();
+        $sessionKey = 'admin.users.filters';
 
-        return view('admin.users.index',compact('users'));
+        if ($request->boolean('reset')) {
+            $request->session()->forget($sessionKey);
+
+            return redirect()->route('admin.users.index');
+        }
+
+        $defaultFilters = [
+            'search' => null,
+            'role' => null,
+            'sort' => 'created_at_desc',
+            'status' => null,
+        ];
+
+        $filterValues = array_merge($defaultFilters, $request->session()->get($sessionKey, []));
+
+        foreach (array_keys($defaultFilters) as $filterKey) {
+            if ($request->query->has($filterKey)) {
+                $value = $request->query($filterKey);
+                $filterValues[$filterKey] = $value !== '' ? $value : null;
+            }
+        }
+
+        $request->session()->put($sessionKey, $filterValues);
+
+        $sortOptions = [
+            'created_at_desc' => [
+                'label' => 'По дате регистрации (новые)',
+                'column' => 'created_at',
+                'direction' => 'desc',
+            ],
+            'created_at_asc' => [
+                'label' => 'По дате регистрации (старые)',
+                'column' => 'created_at',
+                'direction' => 'asc',
+            ],
+            'id_desc' => [
+                'label' => 'По ID (убывание)',
+                'column' => 'id',
+                'direction' => 'desc',
+            ],
+            'id_asc' => [
+                'label' => 'По ID (возрастание)',
+                'column' => 'id',
+                'direction' => 'asc',
+            ],
+        ];
+
+        $roles = User::getRoleLabels();
+        $statusOptions = [
+            'active' => 'Активен',
+            'inactive' => 'Заблокирован',
+        ];
+
+        $sort = $filterValues['sort'] ?? $defaultFilters['sort'];
+        if (! isset($sortOptions[$sort])) {
+            $sort = $defaultFilters['sort'];
+            $filterValues['sort'] = $sort;
+            $request->session()->put($sessionKey, $filterValues);
+        }
+
+        $usersQuery = User::query();
+
+        if (! empty($filterValues['search'])) {
+            $search = trim($filterValues['search']);
+            $usersQuery->where(function ($query) use ($search) {
+                $query
+                    ->where('login', 'like', "%{$search}%")
+                    ->orWhere('last_name', 'like', "%{$search}%")
+                    ->orWhere('first_name', 'like', "%{$search}%")
+                    ->orWhere('middle_name', 'like', "%{$search}%")
+                    ->orWhereRaw("CONCAT_WS(' ', last_name, first_name, middle_name) LIKE ?", ["%{$search}%"]);
+            });
+        }
+
+        if (! empty($filterValues['role']) && array_key_exists($filterValues['role'], $roles)) {
+            $usersQuery->where('role', $filterValues['role']);
+        }
+
+        if (! empty($filterValues['status']) && array_key_exists($filterValues['status'], $statusOptions)) {
+            $usersQuery->where('is_active', $filterValues['status'] === 'active');
+        }
+
+        $sortOption = $sortOptions[$sort];
+        $users = $usersQuery
+            ->orderBy($sortOption['column'], $sortOption['direction'])
+            ->paginate(10)
+            ->withQueryString();
+
+        $filters = [
+            'values' => $filterValues,
+            'options' => [
+                'roles' => $roles,
+                'status' => $statusOptions,
+                'sort' => $sortOptions,
+            ],
+        ];
+
+        return view('admin.users.index', compact('users', 'filters'));
     }
 
     /**
