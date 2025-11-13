@@ -12,7 +12,7 @@
             : '—';
     @endphp
     <div class="row">
-        <div class="col-12 col-xl-8 col-lg-9 col-md-10 mx-auto">
+        <div class="col-12">
             @if(session('status') === 'profile-updated')
                 <div class="alert alert-success d-flex align-items-center mb-1" role="alert">
                     <i data-feather="check-circle" class="me-50"></i>
