@@ -34,6 +34,7 @@ class StoreRequest extends FormRequest
             'middle_name' => ['nullable', 'string', 'max:255'],
             'login' => ['required', 'string', 'max:255', 'unique:users,login'],
             'password' => ['required', 'confirmed', Password::defaults()],
+            //'password_confirmation' => ['required', 'same:password'],
         ];
     }
 }

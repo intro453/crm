@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,6 +20,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        //Model::preventLazyLoading(); //100 select вместо одного
+        //Model::preventAccessingMissingAttributes(); // не существующие атрибуты в таблице
+        //Model::preventSilentlyDiscardingAttributes(); // передача лишних данных не указанных в filliable
+        Model::shouldBeStrict(); // врубаем сразу все 3 жестких защиты
     }
 }
