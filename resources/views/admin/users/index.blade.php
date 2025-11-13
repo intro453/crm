@@ -109,7 +109,7 @@
                             </tbody>
                         </table>
                         <div class="mt-1">
-                            {{ $users->links() }}
+                            {{ $users->links('vendor.pagination.vuexy-basic') }}
                         </div>
                     </div>
                 </div>

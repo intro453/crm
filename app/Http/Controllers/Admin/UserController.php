@@ -42,6 +42,35 @@ class UserController extends Controller
 
         $request->session()->put($sessionKey, $filterValues);
 
+        $existingFilterQuery = [];
+        foreach (array_keys($defaultFilters) as $filterKey) {
+            if ($request->query->has($filterKey)) {
+                $existingFilterQuery[$filterKey] = $request->query($filterKey);
+            }
+        }
+
+        $normalizedFilterQuery = [];
+        foreach ($filterValues as $filterKey => $value) {
+            if ($value === null) {
+                continue;
+            }
+
+            if ($filterKey === 'sort' && $value === $defaultFilters[$filterKey]) {
+                continue;
+            }
+
+            $normalizedFilterQuery[$filterKey] = $value;
+        }
+
+        if ($existingFilterQuery !== $normalizedFilterQuery) {
+            $redirectQuery = array_merge(
+                $request->except(array_keys($defaultFilters)),
+                $normalizedFilterQuery
+            );
+
+            return redirect()->route('admin.users.index', $redirectQuery);
+        }
+
         $sortOptions = [
             'created_at_desc' => [
                 'label' => 'По дате регистрации (новые)',
