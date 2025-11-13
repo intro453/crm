@@ -38,12 +38,6 @@ class UserController extends Controller
     {
         $validated = $request->validated();
 
-        $fullName = trim(collect([
-            $validated['last_name'],
-            $validated['first_name'],
-            $validated['middle_name'] ?? null,
-        ])->filter()->implode(' '));
-
         User::create([
             'role' => $validated['role'],
             'is_active' => (bool) $validated['is_active'],
@@ -52,7 +46,6 @@ class UserController extends Controller
             'middle_name' => $validated['middle_name'] ?? null,
             'login' => $validated['login'],
             'password' => $validated['password'],
-            'name' => $fullName !== '' ? $fullName : $validated['login'],
             'email' => $validated['login'] . '@crm.local',
         ]);
 
