@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Profile\UpdateRequest;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -18,26 +19,13 @@ class ProfileController extends Controller
         ]);
     }
 
-    public function updateProfile(Request $request): RedirectResponse
+    public function updateProfile(UpdateRequest $request): RedirectResponse
     {
         $user = $request->user();
 
-        $validated = $request->validate([
-            'last_name' => ['nullable', 'string', 'max:255'],
-            'first_name' => ['nullable', 'string', 'max:255'],
-            'middle_name' => ['nullable', 'string', 'max:255'],
-        ]);
+        $validated = $request->validated();
 
         $user->fill($validated);
-        $fullName = trim(collect([
-            $validated['last_name'] ?? null,
-            $validated['first_name'] ?? null,
-            $validated['middle_name'] ?? null,
-        ])->filter()->implode(' '));
-
-        if ($fullName !== '') {
-            $user->name = $fullName;
-        }
 
         $user->save();
 

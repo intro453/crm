@@ -13,6 +13,11 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
+    public const ROLE_ADMIN = 'admin';
+    public const ROLE_MANAGER = 'manager';
+    public const ROLE_LAWYER = 'lawyer';
+
+
     /**
      * The attributes that are mass assignable.
      *
@@ -51,18 +56,44 @@ class User extends Authenticatable
         'is_active' => 'boolean',
     ];
 
+    public static function getRoleLabels(): array
+    {
+        return [
+            self::ROLE_ADMIN => 'Админ',
+            self::ROLE_MANAGER => 'Менеджер',
+            self::ROLE_LAWYER => 'Юрист',
+        ];
+    }
+
+    public static function getRoleLabel(string $role): string
+    {
+         return self::getRoleLabels()[$role] ?? '';
+    }
+
     public function getIsAdminAttribute(): bool
     {
-        return $this->role === 'admin';
+        return $this->role === self::ROLE_ADMIN;
     }
 
     public function getIsManagerAttribute(): bool
     {
-        return $this->role === 'manager';
+        return $this->role === self::ROLE_MANAGER;
     }
 
     public function getIsLawyerAttribute(): bool
     {
-        return $this->role === 'lawyer';
+        return $this->role === self::ROLE_LAWYER;
+    }
+
+    public function getFullNameAttribute(): string
+    {
+        return collect([$this->last_name, $this->first_name, $this->middle_name])
+            ->filter()
+            ->join(' ');
+    }
+
+    public function getRoleLabelAttribute(): string
+    {
+        return self::getRoleLabel($this->role);
     }
 }

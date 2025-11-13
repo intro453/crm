@@ -25,7 +25,7 @@ Route::middleware('auth')->group(function () {
         Route::put('/profile', [ProfileController::class, 'updateProfile'])->name('profile.update');
         Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
 
-        Route::get('/users', [UserController::class, 'index'])->name('users');
+        Route::resource('users', UserController::class)->except('show');
     });
     Route::view('/manager/profile', 'manager.profile')->middleware('manager')->name('manager.profile');
     Route::view('/lawyer/profile', 'lawyer.profile')->middleware('lawyer')->name('lawyer.profile');
