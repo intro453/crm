@@ -17,42 +17,59 @@
                 <div class="card-body">
                     <h4 class="card-title mb-2">Пользователи</h4>
 
-                    <div class="row">
-                        <div class="col-md-4 user_search">
-                            <label class="w-100">Search:
-                                <input type="search" class="form-control" placeholder="">
-                            </label>
+                    <form method="GET" action="{{ route('admin.users.index') }}">
+                        <div class="row g-1 align-items-end">
+                            <div class="col-md-4 user_search">
+                                <label class="w-100">Поиск
+                                    <input type="search" name="search" class="form-control" placeholder="ФИО или логин"
+                                           value="{{ $filters['values']['search'] ?? '' }}">
+                                </label>
+                            </div>
+                            <div class="col-md-2 user_role">
+                                <label class="form-label" for="UserRole">Роль</label>
+                                <select id="UserRole" name="role" class="form-select text-capitalize mb-md-0 mb-2">
+                                    <option value="">Все</option>
+                                    @foreach($filters['options']['roles'] as $value => $label)
+                                        <option value="{{ $value }}" @selected(($filters['values']['role'] ?? null) === $value)>
+                                            {{ $label }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-2 user_sort">
+                                <label class="form-label" for="UserSort">Сортировка</label>
+                                <select id="UserSort" name="sort" class="form-select text-capitalize mb-md-0 mb-2">
+                                    @foreach($filters['options']['sort'] as $value => $option)
+                                        <option value="{{ $value }}" @selected(($filters['values']['sort'] ?? null) === $value)>
+                                            {{ $option['label'] }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-2 user_status">
+                                <label class="form-label" for="FilterTransaction">Статус</label>
+                                <select id="FilterTransaction" name="status" class="form-select text-capitalize mb-md-0 mb-2">
+                                    <option value="">Все</option>
+                                    @foreach($filters['options']['status'] as $value => $label)
+                                        <option value="{{ $value }}" @selected(($filters['values']['status'] ?? null) === $value)>
+                                            {{ $label }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-2 user_buttons">
+                                <div class="d-flex gap-1 mt-2">
+                                    <button type="submit" class="btn btn-icon btn-outline-primary" title="Применить фильтры">
+                                        <i data-feather="search"></i>
+                                    </button>
+                                    <a href="{{ route('admin.users.index', ['reset' => 1]) }}" class="btn btn-icon btn-outline-secondary"
+                                       title="Сбросить фильтры">
+                                        <i data-feather="x"></i>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-md-2 user_role"><label class="form-label" for="UserRole">Role</label><select
-                                id="UserRole" class="form-select text-capitalize mb-md-0 mb-2">
-                                <option value=""> Select Role</option>
-                                <option value="Admin" class="text-capitalize">Admin</option>
-                                <option value="Author" class="text-capitalize">Author</option>
-                                <option value="Editor" class="text-capitalize">Editor</option>
-                                <option value="Maintainer" class="text-capitalize">Maintainer</option>
-                                <option value="Subscriber" class="text-capitalize">Subscriber</option>
-                            </select></div>
-                        <div class="col-md-2 user_plan"><label class="form-label" for="UserPlan">Plan</label><select
-                                id="UserPlan" class="form-select text-capitalize mb-md-0 mb-2">
-                                <option value=""> Select Plan</option>
-                                <option value="Basic" class="text-capitalize">Basic</option>
-                                <option value="Company" class="text-capitalize">Company</option>
-                                <option value="Enterprise" class="text-capitalize">Enterprise</option>
-                                <option value="Team" class="text-capitalize">Team</option>
-                            </select></div>
-                        <div class="col-md-2 user_status"><label class="form-label"
-                                                                 for="FilterTransaction">Status</label><select
-                                id="FilterTransaction" class="form-select text-capitalize mb-md-0 mb-2xx">
-                                <option value=""> Select Status</option>
-                                <option value="Pending" class="text-capitalize">Pending</option>
-                                <option value="Active" class="text-capitalize">Active</option>
-                                <option value="Inactive" class="text-capitalize">Inactive</option>
-                            </select></div>
-                        <div class="col-md-2 user_buttons">
-                            <div class="mt-2"><i style="width:32px;height:32px;" data-feather='search'></i> <i
-                                    class="ms-1" style="width:37px;height:37px;" data-feather='delete'></i></div>
-                        </div>
-                    </div>
+                    </form>
 
                     <a class="btn btn-primary waves-effect waves-float waves-light mt-2" href="{{ route('admin.users.create') }}">+ Новый пользователь</a>
 
@@ -70,7 +87,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($users as $user)
+                            @forelse($users as $user)
                                 <tr>
                                     <td>{{ $user->id }}</td>
                                     <td>
@@ -84,9 +101,16 @@
                                         <a href="{{ route('admin.users.edit', [$user->id]) }}" class="btn btn-flat-info">Редактировать</a>
                                     </td>
                                 </tr>
-                            @endforeach
+                            @empty
+                                <tr>
+                                    <td colspan="7" class="text-center">Пользователи не найдены.</td>
+                                </tr>
+                            @endforelse
                             </tbody>
                         </table>
+                        <div class="mt-1">
+                            {{ $users->links() }}
+                        </div>
                     </div>
                 </div>
             </div>
