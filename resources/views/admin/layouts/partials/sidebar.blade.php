@@ -25,7 +25,7 @@
             <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="user-check"></i><span class="menu-title text-truncate">Отчеты</span></a></li>
             <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="tag"></i><span class="menu-title text-truncate">Темы заявок</span></a></li>
             <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="tag"></i><span class="menu-title text-truncate">Суды</span></a></li>
-            <li class=" nav-item {{ request()->routeIs('admin.users') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ route('admin.users.index') }}"><i data-feather="tag"></i><span class="menu-title text-truncate">Пользователи</span></a></li>
+            <li class=" nav-item {{ request()->routeIs('admin.users.*') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ route('admin.users.index') }}"><i data-feather="tag"></i><span class="menu-title text-truncate">Пользователи</span></a></li>
             <li class=" nav-item {{ request()->routeIs('admin.profile') ? 'active' : '' }}">
                 <a class="d-flex align-items-center" href="{{ route('admin.profile') }}">
                     <i data-feather="user"></i><span class="menu-title text-truncate">Ваш профиль</span>
