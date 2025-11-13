@@ -8,6 +8,8 @@ use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Password;
 
 class UserController extends Controller
 {
@@ -181,17 +183,64 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(User $user): View
     {
-        //
+        $roles = User::getRoleLabels();
+
+        return view('admin.users.edit', [
+            'user' => $user,
+            'roles' => $roles,
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, User $user): RedirectResponse
     {
-        //
+        if ($request->has('password_form')) {
+            $validated = $request->validateWithBag('passwordUpdate', [
+                'password' => ['required', 'confirmed', Password::defaults()],
+            ]);
+
+            $user->update([
+                'password' => $validated['password'],
+            ]);
+
+            return redirect()
+                ->route('admin.users.edit', $user)
+                ->with('status', 'password-updated');
+        }
+
+        $roleKeys = array_keys(User::getRoleLabels());
+
+        $validated = $request->validate([
+            'role' => ['required', Rule::in($roleKeys)],
+            'is_active' => ['required', 'boolean'],
+            'last_name' => ['required', 'string', 'max:255'],
+            'first_name' => ['required', 'string', 'max:255'],
+            'middle_name' => ['nullable', 'string', 'max:255'],
+            'login' => ['required', 'string', 'max:255', Rule::unique('users', 'login')->ignore($user->id)],
+        ]);
+
+        $middleName = $validated['middle_name'] ?? null;
+        if ($middleName === '') {
+            $middleName = null;
+        }
+
+        $user->update([
+            'role' => $validated['role'],
+            'is_active' => (bool) $validated['is_active'],
+            'last_name' => $validated['last_name'],
+            'first_name' => $validated['first_name'],
+            'middle_name' => $middleName,
+            'login' => $validated['login'],
+            'email' => $validated['login'] . '@crm.local',
+        ]);
+
+        return redirect()
+            ->route('admin.users.edit', $user)
+            ->with('status', 'user-updated');
     }
 
     /**
