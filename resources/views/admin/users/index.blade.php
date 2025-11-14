@@ -2,7 +2,7 @@
 
 @section('title', 'Пользователи')
 @section('layout-title', 'Админ')
-@section('page-title', 'Ваш профиль')
+@section('page-title', 'Пользователи')
 
 @section('content')
     <div class="row">

@@ -14,7 +14,9 @@ class UserSeeder extends Seeder
 
         DB::table('users')->insert([
             [
-                'name' => 'Admin User',
+                'last_name' => 'Admin',
+                'first_name' => 'User',
+                'middle_name' => null,
                 'login' => 'admin',
                 'email' => 'admin@example.com',
                 'password' => $password,
@@ -24,7 +26,9 @@ class UserSeeder extends Seeder
                 'updated_at' => now()
             ],
             [
-                'name' => 'Manager User',
+                'last_name' => 'Manager',
+                'first_name' => 'User',
+                'middle_name' => null,
                 'login' => 'manager',
                 'email' => 'manager@example.com',
                 'password' => $password,
@@ -34,7 +38,9 @@ class UserSeeder extends Seeder
                 'updated_at' => now()
             ],
             [
-                'name' => 'Lawyer User',
+                'last_name' => 'Lawyer',
+                'first_name' => 'User',
+                'middle_name' => null,
                 'login' => 'lawyer',
                 'email' => 'lawyer@example.com',
                 'password' => $password,
@@ -50,7 +56,9 @@ class UserSeeder extends Seeder
 
         for ($i = 0; $i < 100; $i++) {
             DB::table('users')->insert([
-                'name' => $faker->name(),
+                'last_name' => $faker->lastName(),
+                'first_name' => $faker->firstName(),
+                'middle_name' => $faker->optional()->firstName(),
                 'login' => $faker->unique()->userName(),
                 'email' => $faker->unique()->safeEmail(),
                 'password' => $password,
