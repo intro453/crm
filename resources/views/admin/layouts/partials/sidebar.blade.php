@@ -20,12 +20,36 @@
     <div class="shadow-bottom"></div>
     <div class="main-menu-content">
         <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
-            <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="file-text"></i><span class="menu-title text-truncate">Заявки</span></a></li>
-            <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="users"></i><span class="menu-title text-truncate">Клиенты</span></a></li>
-            <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="user-check"></i><span class="menu-title text-truncate">Отчеты</span></a></li>
-            <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="tag"></i><span class="menu-title text-truncate">Темы заявок</span></a></li>
-            <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="tag"></i><span class="menu-title text-truncate">Суды</span></a></li>
-            <li class=" nav-item {{ request()->routeIs('admin.users') ? 'active' : '' }}"><a class="d-flex align-items-center" href="{{ route('admin.users.index') }}"><i data-feather="tag"></i><span class="menu-title text-truncate">Пользователи</span></a></li>
+            <li class=" nav-item {{ request()->routeIs('admin.applications.*') ? 'active' : '' }}">
+                <a class="d-flex align-items-center" href="{{ route('admin.applications.index') }}">
+                    <i data-feather="file-text"></i><span class="menu-title text-truncate">Заявки</span>
+                </a>
+            </li>
+            <li class=" nav-item {{ request()->routeIs('admin.clients.*') ? 'active' : '' }}">
+                <a class="d-flex align-items-center" href="{{ route('admin.clients.index') }}">
+                    <i data-feather="users"></i><span class="menu-title text-truncate">Клиенты</span>
+                </a>
+            </li>
+            <li class=" nav-item {{ request()->routeIs('admin.reports.*') ? 'active' : '' }}">
+                <a class="d-flex align-items-center" href="{{ route('admin.reports.index') }}">
+                    <i data-feather="bar-chart-2"></i><span class="menu-title text-truncate">Отчеты</span>
+                </a>
+            </li>
+            <li class=" nav-item {{ request()->routeIs('admin.topics.*') ? 'active' : '' }}">
+                <a class="d-flex align-items-center" href="{{ route('admin.topics.index') }}">
+                    <i data-feather="layers"></i><span class="menu-title text-truncate">Темы заявок</span>
+                </a>
+            </li>
+            <li class=" nav-item {{ request()->routeIs('admin.courts.*') ? 'active' : '' }}">
+                <a class="d-flex align-items-center" href="{{ route('admin.courts.index') }}">
+                    <i data-feather="map"></i><span class="menu-title text-truncate">Суды</span>
+                </a>
+            </li>
+            <li class=" nav-item {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
+                <a class="d-flex align-items-center" href="{{ route('admin.users.index') }}">
+                    <i data-feather="shield"></i><span class="menu-title text-truncate">Пользователи</span>
+                </a>
+            </li>
             <li class=" nav-item {{ request()->routeIs('admin.profile') ? 'active' : '' }}">
                 <a class="d-flex align-items-center" href="{{ route('admin.profile') }}">
                     <i data-feather="user"></i><span class="menu-title text-truncate">Ваш профиль</span>
