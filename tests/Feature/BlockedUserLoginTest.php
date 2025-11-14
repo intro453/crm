@@ -19,13 +19,13 @@ class BlockedUserLoginTest extends TestCase
         ]);
 
         $response = $this->from('/login')->post('/login', [
-            'email' => $user->email,
+            'login' => $user->email,
             'password' => 'password',
         ]);
 
         $response->assertRedirect('/login');
         $response->assertSessionHasErrors([
-            'email' => trans('auth.blocked'),
+            'login' => trans('auth.blocked'),
         ]);
 
         $this->assertGuest();
