@@ -19,3 +19,4 @@ yarn-error.log
 /.vscode
 /public/vuexy-html-bootstrap5-admin-template/
 /public/fragments/
+/storage/debugbar
