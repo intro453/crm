@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\User;
+use App\Observers\UserObserver;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
 
@@ -24,5 +26,6 @@ class AppServiceProvider extends ServiceProvider
         //Model::preventAccessingMissingAttributes(); // не существующие атрибуты в таблице
         //Model::preventSilentlyDiscardingAttributes(); // передача лишних данных не указанных в filliable
         Model::shouldBeStrict(); // врубаем сразу все 3 жестких защиты
+        User::observe(UserObserver::class);
     }
 }

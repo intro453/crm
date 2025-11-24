@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\UserVisitedUserList;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\User\StoreRequest;
 use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 
@@ -18,6 +21,35 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
+
+
+        /*try {
+            DB::beginTransaction();
+            User::create([
+                'login' => Str::random(10),
+                'password' => '12345678',
+                'email' => Str::random(10) . '@crm.local',
+            ]);
+            throw new \Exception();
+            User::create([
+                'login' => Str::random(10),
+                'password' => '12345678',
+                'email' => Str::random(10) . '@crm.local',
+            ]);
+            DB::commit();
+        }catch (\Throwable $e){
+            DB::rollBack();
+            throw $e;
+        }
+
+
+       // DB::transaction(function () {
+
+      //  });*/
+
+
+
+
         $sessionKey = 'admin.users.filters';
 
         if ($request->boolean('reset')) {
@@ -146,6 +178,13 @@ class UserController extends Controller
             ],
         ];
 
+
+        $user = auth()->user();
+
+        if ($user) {
+            UserVisitedUserList::dispatch($user);
+        }
+
         return view('admin.users.index', compact('users', 'filters'));
     }
 
@@ -176,6 +215,19 @@ class UserController extends Controller
             'password' => $validated['password'],
             'email' => $validated['login'] . '@crm.local',
         ]);
+        /*$user = new User();
+        $user->fill([
+            'role' => $validated['role'],
+            'is_active' => (bool) $validated['is_active'],
+            'last_name' => $validated['last_name'],
+            'first_name' => $validated['first_name'],
+            'middle_name' => $validated['middle_name'] ?? null,
+            'login' => $validated['login'],
+            'password' => $validated['password'],
+            'email' => $validated['login'] . '@crm.local',
+        ]);
+        $user->saveQuietly(); //без observe
+        */
 
         return redirect()->route('admin.users.index');
     }
