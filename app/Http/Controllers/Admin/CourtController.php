@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Court\StoreRequest;
 use App\Http\Requests\Admin\Court\UpdateRequest;
+use App\Jobs\DeleteSoftDeletedCourtsJob;
+use App\Jobs\DispatchBlockUsersJob;
 use App\Models\Application;
 use App\Models\Court;
 use Illuminate\Contracts\View\View;
@@ -28,6 +30,8 @@ class CourtController extends Controller
     public function store(StoreRequest $request): RedirectResponse
     {
         Court::create($request->validated());
+        //DispatchBlockUsersJob::dispatch();
+        DeleteSoftDeletedCourtsJob::dispatch(); //асинхронно
 
         return redirect()->route('admin.courts.index')
             ->with('status', 'court-created');
