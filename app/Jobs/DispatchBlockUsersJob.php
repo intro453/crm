@@ -31,5 +31,13 @@ class DispatchBlockUsersJob implements ShouldQueue
                 BlockUserJob::dispatch($user->id);
             }
         });
+        /*
+            $user = User::query()->where('is_active', true)->first();
+        if ($user) {
+            $user->update(['is_active' => false]);
+            DispatchBlockUsersJob::dispatch(); // сам себя
+        }
+        */
+
     }
 }
