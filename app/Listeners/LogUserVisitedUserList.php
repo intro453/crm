@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\UserVisitedUserList;
+use Carbon\Carbon;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
@@ -23,8 +24,8 @@ class LogUserVisitedUserList
     {
         $user = $event->user;
 
-        $date = Carbon::now()->format('H:i:s d.m.y');
+        $date = now()->format('H:i:s d.m.y');
 
-        Log::info("Пользователь {$user->name} (id={$user->id}) зашел на страницу в {$date}");
+        info("Пользователь {$user->first_name} (id={$user->id}) зашел на страницу в {$date}");
     }
 }

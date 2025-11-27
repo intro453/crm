@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Court\StoreRequest;
 use App\Http\Requests\Admin\Court\UpdateRequest;
+use App\Models\Application;
 use App\Models\Court;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -12,29 +13,11 @@ use Illuminate\Http\Request;
 
 class CourtController extends Controller
 {
-    public function index(Request $request): View
+    public function index(): View
     {
-        $query = Court::query();
+        $courts = Court::orderBy('name')->paginate(15);
 
-        $search = trim((string) $request->query('search'));
-        if ($search !== '') {
-            $query->where(function ($builder) use ($search) {
-                $builder
-                    ->where('name', 'like', "%{$search}%")
-                    ->orWhere('region', 'like', "%{$search}%")
-                    ->orWhere('address', 'like', "%{$search}%");
-            });
-        }
-
-        $courts = $query
-            ->orderBy('name')
-            ->paginate(15)
-            ->withQueryString();
-
-        return view('admin.courts.index', [
-            'courts' => $courts,
-            'search' => $search,
-        ]);
+        return view('admin.courts.index', compact('courts'));
     }
 
     public function create(): View
@@ -65,9 +48,13 @@ class CourtController extends Controller
 
     public function destroy(Court $court): RedirectResponse
     {
-        $court->delete();
+        if(Application::query()->where('court_id',$court->id)->doesntExist()){
+            $court->delete();
 
+            return redirect()->route('admin.courts.index')
+                ->with('status', 'court-deleted');
+        }
         return redirect()->route('admin.courts.index')
-            ->with('status', 'court-deleted');
+            ->with('status', 'court-not-deleted');
     }
 }

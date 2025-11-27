@@ -12,12 +12,5 @@ class Court extends Model
 
     protected $fillable = [
         'name',
-        'region',
-        'address',
     ];
-
-    public function applications()
-    {
-        return $this->hasMany(Application::class);
-    }
 }

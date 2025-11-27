@@ -15,6 +15,7 @@
                             @case('court-created') Суд добавлен. @break
                             @case('court-updated') Суд обновлён. @break
                             @case('court-deleted') Суд удалён. @break
+                            @case('court-not-deleted') Суд не может быть удалён. @break
                         @endswitch
                     </span>
                 </div>
@@ -23,22 +24,6 @@
                 <div class="card-body">
                     <h4 class="card-title mb-2">Список судов</h4>
 
-                    <form method="GET" action="{{ route('admin.courts.index') }}" class="mb-1">
-                        <div class="row g-1 align-items-end">
-                            <div class="col-md-6">
-                                <label class="w-100">Поиск
-                                    <input type="search" name="search" class="form-control" placeholder="Название, регион или адрес"
-                                           value="{{ $search }}">
-                                </label>
-                            </div>
-                            <div class="col-md-2">
-                                <button type="submit" class="btn btn-primary">Поиск</button>
-                            </div>
-                            <div class="col-md-2">
-                                <a href="{{ route('admin.courts.index') }}" class="btn btn-outline-secondary">Сбросить</a>
-                            </div>
-                        </div>
-                    </form>
 
                     <a class="btn btn-primary waves-effect waves-float waves-light" href="{{ route('admin.courts.create') }}">+ Новый суд</a>
 
@@ -48,8 +33,6 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Название</th>
-                                <th>Регион</th>
-                                <th>Адрес</th>
                                 <th></th>
                             </tr>
                             </thead>
@@ -58,8 +41,6 @@
                                 <tr>
                                     <td>{{ $court->id }}</td>
                                     <td>{{ $court->name }}</td>
-                                    <td>{{ $court->region }}</td>
-                                    <td>{{ $court->address }}</td>
                                     <td class="text-end">
                                         <a href="{{ route('admin.courts.edit', $court) }}" class="btn btn-sm btn-flat-info">Редактировать</a>
                                         <form action="{{ route('admin.courts.destroy', $court) }}" method="POST" class="d-inline">
