@@ -13,17 +13,13 @@ class StoreRequest extends FormRequest
 
     protected function prepareForValidation(): void
     {
-        $this->merge([
-            'is_active' => $this->boolean('is_active'),
-        ]);
+
     }
 
     public function rules(): array
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'description' => ['nullable', 'string'],
-            'is_active' => ['required', 'boolean'],
         ];
     }
 }

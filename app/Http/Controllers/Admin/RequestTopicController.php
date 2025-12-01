@@ -16,16 +16,6 @@ class RequestTopicController extends Controller
     {
         $query = RequestTopic::query();
 
-        $search = trim((string) $request->query('search'));
-        if ($search !== '') {
-            $query->where('name', 'like', "%{$search}%");
-        }
-
-        $isActive = $request->query('is_active');
-        if ($isActive !== null && $isActive !== '') {
-            $query->where('is_active', (bool) $isActive);
-        }
-
         $topics = $query
             ->orderBy('name')
             ->paginate(15)
@@ -33,10 +23,6 @@ class RequestTopicController extends Controller
 
         return view('admin.topics.index', [
             'topics' => $topics,
-            'filters' => [
-                'search' => $search,
-                'is_active' => $isActive,
-            ],
         ]);
     }
 
