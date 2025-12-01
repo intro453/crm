@@ -22,6 +22,38 @@ class UserController extends Controller
     public function index(Request $request)
     {
 
+        //01.12.2025
+        //$users = User::activeAdminsOrManagers()->get();
+        //dd($users->toArray());
+
+        //$users = User::query()->select(['id','role','is_active','email','login'])->get();
+        //dd($users->toArray()); // Превратить коллекцию в обычный массив
+        //dd($users->count()); //Показать кол-во элементов коллекции
+
+        /*if($users->isNotEmpty()) { //Если коллекция не пустая, показать первого пользователя
+            dd($users->first()->toArray());
+        }*/
+
+        //$users->pop(); // Удалить последний элемент
+        //dd($users->toArray());
+
+        /*if ($users->every(fn($u) => $u->is_active == 1)) { // Вывести yes, если все пользователи в коллекции незаблокированы
+            echo 'yes';
+        } else {
+            echo 'no';
+        }
+        exit;*/
+
+
+        //$users = User::query()->select(['id','role','is_active','email','login'])->where('role','admin')->get(); //Получить коллекцию только админов
+        //$users->sortBy('login'); //Отсортировать по login
+       // dd($users->toArray());
+
+        //dd($users->take(3)->toArray()); //1
+        //dd($users->where('login', 'admin')->toArray()); //2
+        //dd($users->toJson()); //3
+
+
 
         /*try {
             DB::beginTransaction();

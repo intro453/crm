@@ -96,4 +96,11 @@ class User extends Authenticatable
     {
         return self::getRoleLabel($this->role);
     }
+
+    public function scopeActiveAdminsOrManagers($query)
+    {
+        return $query
+            ->where('is_active', 1)
+            ->whereIn('role', ['admin', 'manager']);
+    }
 }
