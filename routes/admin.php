@@ -16,7 +16,7 @@ Route::middleware('auth')->group(function () {
 
         Route::resource('applications', ApplicationController::class)->except('show');
         Route::resource('clients', ClientController::class)->except('show');
-        Route::resource('reports', ReportController::class)->except('show');
+        Route::resource('reports', ReportController::class)->only('index');
         Route::resource('topics', RequestTopicController::class)->except('show');
         Route::resource('courts', CourtController::class)->except('show');
         Route::resource('users', UserController::class)->except('show');

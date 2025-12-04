@@ -1,8 +1,8 @@
 <div class="row g-1">
     <div class="col-md-6">
         <label class="form-label" for="clientName">Имя клиента</label>
-        <input type="text" id="clientName" name="name" class="form-control" value="{{ old('name', $client->name ?? '') }}" required>
-        @error('name')
+        <input type="text" id="clientName" name="first_name" class="form-control" value="{{ old('first_name', $client->first_name ?? '') }}" required>
+        @error('first_name')
         <small class="text-danger">{{ $message }}</small>
         @enderror
     </div>
